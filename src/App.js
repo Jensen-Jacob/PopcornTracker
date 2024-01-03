@@ -53,7 +53,7 @@ const average = (arr) =>
 const KEY = "fbe0252c";
 
 export default function App() {
-  const [query, setQuery] = useState("interstellar");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +64,7 @@ export default function App() {
     function () {
       async function fetchMovies() {
         try {
+          setError("");
           setIsLoading(true);
           const res = await fetch(
             // `http://www.omdbapi.com/?s=${tempQuery}&apikey=${KEY}`
@@ -79,6 +80,11 @@ export default function App() {
         } finally {
           setIsLoading(false);
         }
+      }
+      if (!query.length || query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
       }
       fetchMovies();
     },
