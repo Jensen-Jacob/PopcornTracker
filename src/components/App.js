@@ -62,7 +62,7 @@ import { WatchedSummary } from "./WatchedSummary";
 export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const KEY = "fbe0252c";
+const apiKey = "fbe0252c";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -73,7 +73,11 @@ export default function App() {
   const [selectedMovieID, setSelectedMovieID] = useState(null);
 
   function handleMovieSelection(id) {
-    setSelectedMovieID(id);
+    setSelectedMovieID((selectedId) => (id === selectedId ? null : id));
+  }
+
+  function handleCloseMovieSelection() {
+    setSelectedMovieID(null);
   }
 
   useEffect(
@@ -83,7 +87,7 @@ export default function App() {
           setError("");
           setIsLoading(true);
           const res = await fetch(
-            `http://www.omdbapi.com/?s=${query}&apikey=${KEY}`
+            `http://www.omdbapi.com/?s=${query}&apikey=${apiKey}`
           );
           if (!res.ok) throw new Error("Something went wrong");
           const data = await res.json();
@@ -95,6 +99,9 @@ export default function App() {
           setError(err.message);
         } finally {
           setIsLoading(false);
+          if (movies.length > 0) {
+            setError("");
+          }
         }
       }
       if (!query.length || query.length < 3) {
@@ -128,7 +135,11 @@ export default function App() {
         </ListBox>
         <ListBox>
           {selectedMovieID ? (
-            <MovieDetails selectedMovieID={selectedMovieID} />
+            <MovieDetails
+              selectedMovieID={selectedMovieID}
+              apiKey={apiKey}
+              onCloseMovieSelection={handleCloseMovieSelection}
+            />
           ) : (
             <>
               <WatchedSummary watched={watched} />
