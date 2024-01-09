@@ -11,12 +11,13 @@ export function MovieDetails({
 }) {
   const [isLoadingMovieDetails, setIsLoadingMovieDetails] = useState(false);
   const [movieDetails, setMovieDetails] = useState({});
+  const [userRating, setUserRating] = useState(0);
+  console.log(selectedMovieID);
 
   const {
     Title: title,
-    // Year: year,
+    Year: year,
     Poster: poster,
-    // Ratings: ratings,
     Runtime: runtime,
     imdbRating,
     Plot: plot,
@@ -52,6 +53,21 @@ export function MovieDetails({
 
   console.log(movieDetails);
 
+  function handleAddWatchedMovie() {
+    const newWatchedMovieDetails = {
+      imdbID: selectedMovieID,
+      title,
+      year,
+      poster,
+      runtime,
+      userRating: userRating,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split(" ").at(0)),
+    };
+
+    onAddWatchedMovie(newWatchedMovieDetails);
+  }
+
   return (
     <>
       {isLoadingMovieDetails ? (
@@ -59,7 +75,9 @@ export function MovieDetails({
       ) : (
         <div className="details">
           <button className="btn-back" onClick={onCloseMovieSelection}>
-            &larr;
+            {/* <span> */}
+            <b>&larr;</b>
+            {/* </span> */}
           </button>
           <header>
             <img src={poster} alt="" />
@@ -78,11 +96,17 @@ export function MovieDetails({
             </div>
           </header>
           <section>
-            <StarRating className="rating" maxRating={10} size={24} />
+            <StarRating
+              className="rating"
+              maxRating={10}
+              size={24}
+              onSetRating={setUserRating}
+            />
             {/* <div className="rating"> */}
             <button
               className="btn-add"
-              onClick={() => onAddWatchedMovie(movieDetails)}
+              // onClick={() => onAddWatchedMovie(movieDetails)}
+              onClick={handleAddWatchedMovie}
             >
               + Add to list
             </button>
