@@ -82,8 +82,6 @@ function Star({
     height: `${size}px`,
     display: "block",
     cursor: "pointer",
-    // color,
-    // size,
   };
 
   return (

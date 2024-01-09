@@ -1,4 +1,7 @@
+// import { useEffect } from "react";
+
 export function WatchedMovie({ movie }) {
+  console.log(movie);
   return (
     <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -14,7 +17,7 @@ export function WatchedMovie({ movie }) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{movie.runtime} min</span>
+          <span>{Number(movie.Runtime.split(" ")[0])} min</span>
         </p>
       </div>
     </li>

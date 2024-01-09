@@ -6,6 +6,7 @@ export function MovieDetails({
   selectedMovieID,
   apiKey,
   onCloseMovieSelection,
+  onAddWatchedMovie,
   // setIsLoadingMovieDetails,
 }) {
   const [isLoadingMovieDetails, setIsLoadingMovieDetails] = useState(false);
@@ -13,9 +14,9 @@ export function MovieDetails({
 
   const {
     Title: title,
-    Year: year,
+    // Year: year,
     Poster: poster,
-    Ratings: ratings,
+    // Ratings: ratings,
     Runtime: runtime,
     imdbRating,
     Plot: plot,
@@ -77,7 +78,15 @@ export function MovieDetails({
             </div>
           </header>
           <section>
-            <StarRating className="rating" maxRating={10} size={30} />
+            <StarRating className="rating" maxRating={10} size={24} />
+            {/* <div className="rating"> */}
+            <button
+              className="btn-add"
+              onClick={() => onAddWatchedMovie(movieDetails)}
+            >
+              + Add to list
+            </button>
+            {/* </div> */}
             <p>
               <em>{plot}</em>
             </p>
