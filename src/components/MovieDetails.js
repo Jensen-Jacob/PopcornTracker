@@ -4,6 +4,7 @@ import StarRating from "./StarRating";
 
 export function MovieDetails({
   selectedMovieID,
+  watched,
   apiKey,
   onCloseMovieSelection,
   onAddWatchedMovie,
@@ -12,7 +13,16 @@ export function MovieDetails({
   const [isLoadingMovieDetails, setIsLoadingMovieDetails] = useState(false);
   const [movieDetails, setMovieDetails] = useState({});
   const [userRating, setUserRating] = useState(0);
-  console.log(selectedMovieID);
+
+  const isWatched = watched
+    .map((movie) => movie.imdbID)
+    .includes(selectedMovieID);
+
+  const existingUserRating = watched.find(
+    (movie) => movie.imdbID === selectedMovieID
+  )?.userRating;
+
+  console.log(selectedMovieID, isWatched);
 
   const {
     Title: title,
@@ -48,7 +58,7 @@ export function MovieDetails({
       }
       fetchSelectedMovieDetails();
     },
-    [apiKey, selectedMovieID]
+    [apiKey, selectedMovieID, watched]
   );
 
   console.log(movieDetails);
@@ -59,13 +69,13 @@ export function MovieDetails({
       title,
       year,
       poster,
-      runtime,
       userRating: userRating,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
     };
 
     onAddWatchedMovie(newWatchedMovieDetails);
+    onCloseMovieSelection();
   }
 
   return (
@@ -75,9 +85,7 @@ export function MovieDetails({
       ) : (
         <div className="details">
           <button className="btn-back" onClick={onCloseMovieSelection}>
-            {/* <span> */}
-            <b>&larr;</b>
-            {/* </span> */}
+            &larr;
           </button>
           <header>
             <img src={poster} alt="" />
@@ -91,26 +99,33 @@ export function MovieDetails({
                 <span>🌟</span>
                 {imdbRating} IMDb Rating
               </p>
-              {/* <span className="rating">{ratings[0].Value}</span> */}
-              {/* <p>{plot}</p> */}
             </div>
           </header>
           <section>
-            <StarRating
-              className="rating"
-              maxRating={10}
-              size={24}
-              onSetRating={setUserRating}
-            />
-            {/* <div className="rating"> */}
-            <button
-              className="btn-add"
-              // onClick={() => onAddWatchedMovie(movieDetails)}
-              onClick={handleAddWatchedMovie}
-            >
-              + Add to list
-            </button>
-            {/* </div> */}
+            {!isWatched ? (
+              <>
+                <StarRating
+                  className="rating"
+                  maxRating={10}
+                  size={24}
+                  onSetRating={setUserRating}
+                />
+                {userRating > 0 && (
+                  <button
+                    className="btn-add"
+                    // onClick={() => onAddWatchedMovie(movieDetails)}
+                    onClick={handleAddWatchedMovie}
+                  >
+                    + Add to list
+                  </button>
+                )}
+              </>
+            ) : (
+              <p>
+                You rated this movie with {existingUserRating}
+                <span>⭐</span>
+              </p>
+            )}
             <p>
               <em>{plot}</em>
             </p>

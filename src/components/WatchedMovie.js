@@ -1,6 +1,6 @@
 // import { useEffect } from "react";
 
-export function WatchedMovie({ movie }) {
+export function WatchedMovie({ movie, onDeleteWatchedMovie }) {
   console.log(movie);
   return (
     <li>
@@ -20,6 +20,13 @@ export function WatchedMovie({ movie }) {
           {/* <span>{Number(movie.Runtime.split(" ")[0])} min</span> */}
           <span>{movie.runtime} min</span>
         </p>
+
+        <button
+          className="btn-delete"
+          onClick={() => onDeleteWatchedMovie(movie.imdbID)}
+        >
+          X
+        </button>
       </div>
     </li>
   );
