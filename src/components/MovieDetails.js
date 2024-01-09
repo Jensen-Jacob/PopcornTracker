@@ -61,6 +61,33 @@ export function MovieDetails({
     [apiKey, selectedMovieID, watched]
   );
 
+  // useEffect(
+  //   function () {
+  //     async function setPageTitle() {
+  //       const pageTitle = await title;
+  //       if (!pageTitle) {
+  //         document.title = "Loading";
+  //       } else {
+  //         document.title = pageTitle;
+  //       }
+  //     }
+  //     setPageTitle();
+  //   },
+  //   [title]
+  // );
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = title;
+
+      return function () {
+        document.title = "PopcornTracker";
+      };
+    },
+    [title]
+  );
+
   console.log(movieDetails);
 
   function handleAddWatchedMovie() {
