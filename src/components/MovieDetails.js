@@ -88,6 +88,24 @@ export function MovieDetails({
     [title]
   );
 
+  useEffect(
+    function () {
+      function eventListenerCallback(e) {
+        if (e.code === "Escape") {
+          onCloseMovieSelection();
+          console.log("Closing Movie Selection");
+        }
+      }
+
+      document.addEventListener("keydown", eventListenerCallback);
+
+      return function () {
+        document.removeEventListener("keydown", eventListenerCallback);
+      };
+    },
+    [onCloseMovieSelection]
+  );
+
   console.log(movieDetails);
 
   function handleAddWatchedMovie() {
